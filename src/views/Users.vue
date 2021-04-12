@@ -25,7 +25,6 @@ export default {
   },
   methods: {
     checkboxValue: function (params) {
-      console.log(params);
       this.users.splice(params - 1, 1);
     },
   },
@@ -48,6 +47,7 @@ export default {
 
 <style lang="scss" scoped>
 #home {
+  position: relative;
   ul {
     display: grid;
     // grid-template-columns: repeat(4, 1fr);

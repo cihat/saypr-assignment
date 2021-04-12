@@ -1,10 +1,13 @@
 <script>
-import { callWithAsyncErrorHandling } from "vue";
 export default {
   data() {
     return {
       userData: null,
       checkBox: false,
+      liked: false,
+      likedClass: "",
+      updated: false,
+      updatedClass: "",
     };
   },
   props: {
@@ -21,7 +24,6 @@ export default {
   methods: {
     checkbox() {
       this.checkBox = true;
-      // Emit this information to the parents component
       if (this.checkBox) {
         this.$emit("child-checkbox", this.userData.id);
       }
@@ -29,8 +31,25 @@ export default {
     getImgUrl() {
       return `https://avatars.dicebear.com/v2/avataaars/${this.userName}.svg?options[mood][]=happy`;
     },
-    removeUser() {
-      // console.log("removeddd...");
+    likedUser() {
+      if (this.liked) {
+        this.liked = false;
+        this.likedClass = "";
+      } else {
+        this.likedClass = "liked";
+        this.liked = true;
+      }
+    },
+    updatedUser() {
+      if (this.updated) {
+        this.updated = false;
+        this.updatedClass = "";
+        console.log(this.updatedClass);
+      } else {
+        this.updated = true;
+        this.updatedClass = "visibility";
+        console.log(this.updatedClass);
+      }
     },
   },
 };
@@ -98,6 +117,8 @@ export default {
         <ul>
           <li>
             <svg
+              @click="likedUser"
+              :class="likedClass"
               viewBox="64 64 896 896"
               class=""
               data-icon="heart"
@@ -114,8 +135,8 @@ export default {
           </li>
           <li id="li-border">
             <svg
+              @click="updatedUser"
               viewBox="64 64 896 896"
-              class=""
               data-icon="edit"
               width="1em"
               height="1em"
@@ -146,10 +167,29 @@ export default {
         </ul>
       </div>
     </div>
+    <div class="hidden-cart" :class="updatedClass">
+      <h1>helllooo</h1>
+      <p>
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Repudiandae
+        cumque fuga adipisci dolore itaque facilis tempora assumenda vel quidem
+        quis aut reiciendis, est, nostrum facere cupiditate? Beatae magnam nulla
+        quaerat sequi vitae rem fuga accusamus repellat laboriosam eum, odio
+        pariatur tenetur corporis minima eos recusandae eligendi consectetur
+        voluptas alias molestiae? Repudiandae dolor vero ab dignissimos maiores
+        animi aperiam quos tempora alias, quod fugiat deleniti adipisci ex
+        tenetur provident odio minima in modi incidunt. Mollitia similique sed
+        neque, incidunt, voluptate laudantium ipsa vitae exercitationem aut fuga
+        beatae possimus tempora, recusandae aliquid officiis ipsam eum magnam
+        officia quibusdam earum. Dolorem, commodi veritatis.
+      </p>
+    </div>
   </div>
 </template>
 
 <style scoped lang="scss">
+body {
+  position: relative;
+}
 #user {
   .cart {
     border-radius: 5px;
@@ -223,6 +263,13 @@ export default {
           }
           svg#like {
             fill: red;
+            color: red;
+          }
+          svg.liked {
+            background-color: red;
+            border-radius: 50%;
+            padding: 0.4rem;
+            transition: 1s background-color, 1s padding, 1s color;
           }
           svg:hover {
             fill: blue;
@@ -238,6 +285,43 @@ export default {
         }
       }
     }
+  }
+
+  .hidden-cart {
+    display: none;
+    visibility: hidden;
+    position: absolute;
+    z-index: 1;
+    margin: auto;
+    // left: calc(50vw - 100px);
+    // top: calc(50vh - 100px);
+  }
+
+  .visibility {
+    position: fixed;
+    width: 520px;
+    height: 411.26em;
+    z-index: 1;
+    margin: 3rem;
+    border-color: #000;
+    visibility: visible;
+    display: block;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 0;
+    border-radius: 4px;
+    box-shadow: 0 4px 12px rgb(0 0 0 / 15%);
+    transform-origin: 257.778px 295.556px;
+    box-sizing: border-box;
+    color: rgba(0, 0, 0, 0.65);
+    font-size: 14px;
+    font-variant: tabular-nums;
+    line-height: 1.5;
+    list-style: none;
+    font-feature-settings: "tnum", "tnum";
+    top: 100px;
+    margin: 0 auto;
+    padding: 0 0 24px;
   }
 }
 </style>
