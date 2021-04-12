@@ -7,6 +7,7 @@ export default {
     return {
       users: {},
       userName: "",
+      check: false,
     };
   },
   components: {
@@ -22,7 +23,12 @@ export default {
         console.log(err);
       });
   },
-  methods: {},
+  methods: {
+    checkboxValue: function (params) {
+      console.log(params);
+      this.users.splice(params - 1, 1);
+    },
+  },
 };
 </script>
 
@@ -30,7 +36,11 @@ export default {
   <div id="home">
     <ul>
       <li v-for="(user, index) in users" :key="index">
-        <User :data="users[index]" :userName="users[index].name" />
+        <User
+          :data="users[index]"
+          :userName="users[index].name"
+          @child-checkbox="checkboxValue"
+        />
       </li>
     </ul>
   </div>

@@ -1,8 +1,10 @@
 <script>
+import { callWithAsyncErrorHandling } from "vue";
 export default {
   data() {
     return {
       userData: null,
+      checkBox: false,
     };
   },
   props: {
@@ -15,9 +17,20 @@ export default {
   created() {
     this.userData = this.data;
   },
+  watch: {},
   methods: {
+    checkbox() {
+      this.checkBox = true;
+      // Emit this information to the parents component
+      if (this.checkBox) {
+        this.$emit("child-checkbox", this.userData.id);
+      }
+    },
     getImgUrl() {
       return `https://avatars.dicebear.com/v2/avataaars/${this.userName}.svg?options[mood][]=happy`;
+    },
+    removeUser() {
+      // console.log("removeddd...");
     },
   },
 };
@@ -116,6 +129,7 @@ export default {
           </li>
           <li>
             <svg
+              @click="checkbox"
               viewBox="64 64 896 896"
               class=""
               data-icon="delete"
@@ -201,10 +215,10 @@ export default {
 
         li {
           flex: 1;
-          cursor: pointer;
           margin: 12px 0px;
           // color: rgba(0, 0, 0, 0.45);
           svg {
+            cursor: pointer;
             font-size: 18px;
           }
           svg#like {
