@@ -24,8 +24,9 @@ export default {
       });
   },
   methods: {
-    checkboxValue: function (params) {
-      this.users.splice(params - 1, 1);
+    checkboxValue: function (userData) {
+      this.users.splice(userData.id - 1, 1);
+      console.log(userData.isLiked);
     },
   },
 };
@@ -46,8 +47,10 @@ export default {
 </template>
 
 <style lang="scss" scoped>
-#home {
+body {
   position: relative;
+}
+#home {
   ul {
     display: grid;
     // grid-template-columns: repeat(4, 1fr);

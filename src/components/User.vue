@@ -8,8 +8,15 @@ export default {
       likedClass: "",
       updated: false,
       updatedClass: "",
+      inputData: {
+        inputName: null,
+        inputEmail: null,
+        inputPhone: null,
+        inputWebsite: null,
+      },
     };
   },
+  components: {},
   props: {
     data: {
       type: Object,
@@ -25,7 +32,11 @@ export default {
     checkbox() {
       this.checkBox = true;
       if (this.checkBox) {
-        this.$emit("child-checkbox", this.userData.id);
+        this.$emit("child-checkbox", {
+          id: this.userData.id,
+          isLiked: this.liked,
+        });
+        this.likedClass = "";
       }
     },
     getImgUrl() {
@@ -34,22 +45,27 @@ export default {
     likedUser() {
       if (this.liked) {
         this.liked = false;
-        this.likedClass = "";
+        this.likedClass = "notLiked";
       } else {
         this.likedClass = "liked";
         this.liked = true;
       }
     },
-    updatedUser() {
+    closePopUp() {
       if (this.updated) {
         this.updated = false;
         this.updatedClass = "";
-        console.log(this.updatedClass);
       } else {
         this.updated = true;
         this.updatedClass = "visibility";
-        console.log(this.updatedClass);
       }
+    },
+    updateUser() {
+      this.data.name = this.$refs.inputName.value;
+      this.data.email = this.$refs.inputEmail.value;
+      this.data.phone = this.$refs.inputPhone.value;
+      this.data.website = this.$refs.inputWebsite.value;
+      this.closePopUp();
     },
   },
 };
@@ -135,7 +151,7 @@ export default {
           </li>
           <li id="li-border">
             <svg
-              @click="updatedUser"
+              @click="closePopUp"
               viewBox="64 64 896 896"
               data-icon="edit"
               width="1em"
@@ -168,28 +184,69 @@ export default {
       </div>
     </div>
     <div class="hidden-cart" :class="updatedClass">
-      <h1>helllooo</h1>
-      <p>
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Repudiandae
-        cumque fuga adipisci dolore itaque facilis tempora assumenda vel quidem
-        quis aut reiciendis, est, nostrum facere cupiditate? Beatae magnam nulla
-        quaerat sequi vitae rem fuga accusamus repellat laboriosam eum, odio
-        pariatur tenetur corporis minima eos recusandae eligendi consectetur
-        voluptas alias molestiae? Repudiandae dolor vero ab dignissimos maiores
-        animi aperiam quos tempora alias, quod fugiat deleniti adipisci ex
-        tenetur provident odio minima in modi incidunt. Mollitia similique sed
-        neque, incidunt, voluptate laudantium ipsa vitae exercitationem aut fuga
-        beatae possimus tempora, recusandae aliquid officiis ipsam eum magnam
-        officia quibusdam earum. Dolorem, commodi veritatis.
-      </p>
+      <div class="header">
+        <h4>Basic Modal</h4>
+        <svg
+          @click="closePopUp"
+          viewBox="64 64 896 896"
+          class=""
+          data-icon="close"
+          width="1em"
+          height="1em"
+          fill="currentColor"
+          aria-hidden="true"
+        >
+          <path
+            d="M563.8 512l262.5-312.9c4.4-5.2.7-13.1-6.1-13.1h-79.8c-4.7 0-9.2 2.1-12.3 5.7L511.6 449.8 295.1 191.7c-3-3.6-7.5-5.7-12.3-5.7H203c-6.8 0-10.5 7.9-6.1 13.1L459.4 512 196.9 824.9A7.95 7.95 0 0 0 203 838h79.8c4.7 0 9.2-2.1 12.3-5.7l216.5-258.1 216.5 258.1c3 3.6 7.5 5.7 12.3 5.7h79.8c6.8 0 10.5-7.9 6.1-13.1L563.8 512z"
+          ></path>
+        </svg>
+      </div>
+      <form action="#">
+        <div class="name input">
+          <label for="name">Name</label>
+          <input
+            :value="data.name"
+            :v-model="inputData.inputName"
+            ref="inputName"
+          />
+        </div>
+        <div class="email input">
+          <label for="email">Email</label>
+          <input
+            :value="data.email"
+            :v-model="inputData.inputEmail"
+            ref="inputEmail"
+          />
+        </div>
+        <div class="phone input">
+          <label for="phone">Phone</label>
+          <input
+            :value="data.phone"
+            id="phone"
+            :v-model="inputData.inputPhone"
+            ref="inputPhone"
+          />
+        </div>
+        <div class="website input">
+          <label for="website">website</label>
+          <input
+            :value="data.website"
+            :v-model="inputData.inputWebsite"
+            ref="inputWebsite"
+          />
+        </div>
+        <div class="buttons">
+          <button type="button" class="cancel" @click="closePopUp">
+            Cancel
+          </button>
+          <button type="button" class="ok" @click="updateUser()">Ok</button>
+        </div>
+      </form>
     </div>
   </div>
 </template>
 
 <style scoped lang="scss">
-body {
-  position: relative;
-}
 #user {
   .cart {
     border-radius: 5px;
@@ -271,6 +328,11 @@ body {
             padding: 0.4rem;
             transition: 1s background-color, 1s padding, 1s color;
           }
+          svg.notLiked {
+            background-color: white;
+            border-radius: 50%;
+            transition: 1s background-color, 1s padding, 1s color;
+          }
           svg:hover {
             fill: blue;
           }
@@ -298,30 +360,142 @@ body {
   }
 
   .visibility {
-    position: fixed;
-    width: 520px;
-    height: 411.26em;
-    z-index: 1;
-    margin: 3rem;
-    border-color: #000;
     visibility: visible;
-    display: block;
+    position: fixed;
+    top: 20vh;
+    left: 30vw;
+    right: 30vw;
+    z-index: 1;
+    margin: 0 auto;
+    border-color: #000;
+    display: flex;
+    flex-direction: column;
     background-color: #fff;
-    background-clip: padding-box;
-    border: 0;
     border-radius: 4px;
     box-shadow: 0 4px 12px rgb(0 0 0 / 15%);
-    transform-origin: 257.778px 295.556px;
+    transform-origin: 57.7778px 297.778px;
     box-sizing: border-box;
-    color: rgba(0, 0, 0, 0.65);
-    font-size: 14px;
-    font-variant: tabular-nums;
     line-height: 1.5;
     list-style: none;
     font-feature-settings: "tnum", "tnum";
-    top: 100px;
-    margin: 0 auto;
     padding: 0 0 24px;
+    padding-bottom: 24px;
+
+    .header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1rem;
+      border-bottom: 1px solid;
+      border-radius: 4px 4px 0 0;
+      border-bottom: 1px solid #e8e8e8;
+      h4 {
+        font-weight: 500;
+        font-size: 1rem;
+        color: rgba(0, 0, 0, 0.85);
+        line-height: 22px;
+      }
+      svg {
+        cursor: pointer;
+      }
+    }
+    form {
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      border-bottom: 1px solid #e8e8e8;
+      // align-items: center;
+      // justify-content: space-around;
+      div.input {
+        margin-bottom: 24px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        label {
+          margin-left: 1rem;
+          width: 10rem;
+          color: rgba(0, 0, 0, 0.85);
+          font-size: 14px;
+        }
+        input {
+          box-sizing: border-box;
+          margin: 0;
+          font-variant: tabular-nums;
+          font-variant-ligatures: normal;
+          font-variant-caps: normal;
+          font-variant-numeric: tabular-nums;
+          font-variant-east-asian: normal;
+          list-style: none;
+          -webkit-font-feature-settings: "tnum";
+          font-feature-settings: "tnum", "tnum";
+          position: relative;
+          display: inline-block;
+          width: 100%;
+          height: 32px;
+          padding: 4px 11px;
+          color: rgba(0, 0, 0, 0.65);
+          font-size: 14px;
+          line-height: 1.5;
+          background-color: #fff;
+          background-image: none;
+          border: 1px solid #d9d9d9;
+          border-radius: 4px;
+          transition: all 0.3s;
+        }
+      }
+      .buttons {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        button.cancel {
+          line-height: 1.499;
+          position: relative;
+          display: inline-block;
+          font-weight: 400;
+          white-space: nowrap;
+          text-align: center;
+          background-image: none;
+          box-shadow: 0 2px 0 rgb(0 0 0 / 2%);
+          cursor: pointer;
+          transition: all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
+          user-select: none;
+          touch-action: manipulation;
+          height: 32px;
+          padding: 0 15px;
+          font-size: 14px;
+          border-radius: 4px;
+          color: rgba(0, 0, 0, 0.65);
+          background-color: #fff;
+          border: 1px solid #d9d9d9;
+        }
+        .cancel:hover {
+          color: #1890ff;
+          border-color: #1890ff;
+        }
+        button.ok {
+          background-color: #1890ff;
+          margin-left: 8px;
+          line-height: 1.499;
+          position: relative;
+          display: inline-block;
+          font-weight: 400;
+          white-space: nowrap;
+          text-align: center;
+          background-image: none;
+          box-shadow: 0 2px 0 rgb(0 0 0 / 2%);
+          cursor: pointer;
+          transition: all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
+          user-select: none;
+          touch-action: manipulation;
+          height: 32px;
+          padding: 0 15px;
+          font-size: 14px;
+          border-radius: 4px;
+          color: #fff;
+          border: 1px solid #d9d9d9;
+        }
+      }
+    }
   }
 }
 </style>
