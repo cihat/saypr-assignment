@@ -74,7 +74,6 @@ export default {
 <template>
   <div id="user">
     <div class="cart">
-      <!-- <div class="image"><img src="../assets/img/Bret.svg" alt="" /></div> -->
       <div class="image">
         <img :src="getImgUrl()" alt="username" />
       </div>
@@ -201,10 +200,14 @@ export default {
           ></path>
         </svg>
       </div>
-      <form action="#">
+      <form action="#" name="updateForm">
         <div class="name input">
           <label for="name">Name</label>
           <input
+            required
+            name="name"
+            minlength="2"
+            maxlength="20"
             :value="data.name"
             :v-model="inputData.inputName"
             ref="inputName"
@@ -213,6 +216,9 @@ export default {
         <div class="email input">
           <label for="email">Email</label>
           <input
+            name="email"
+            type="email"
+            required
             :value="data.email"
             :v-model="inputData.inputEmail"
             ref="inputEmail"
@@ -221,6 +227,9 @@ export default {
         <div class="phone input">
           <label for="phone">Phone</label>
           <input
+            type="tel"
+            name="phone"
+            required
             :value="data.phone"
             id="phone"
             :v-model="inputData.inputPhone"
@@ -228,8 +237,10 @@ export default {
           />
         </div>
         <div class="website input">
-          <label for="website">website</label>
+          <label for="website">Website</label>
           <input
+            required
+            name="website"
             :value="data.website"
             :v-model="inputData.inputWebsite"
             ref="inputWebsite"

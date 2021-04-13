@@ -1,6 +1,7 @@
 <script>
 import User from "../components/User";
 import axios from "axios";
+
 export default {
   name: "Home",
   data() {
@@ -26,7 +27,6 @@ export default {
   methods: {
     checkboxValue: function (userData) {
       this.users.splice(userData.id - 1, 1);
-      console.log(userData.isLiked);
     },
   },
 };
