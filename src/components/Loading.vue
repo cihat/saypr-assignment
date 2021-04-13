@@ -8,7 +8,7 @@ export default {
   async created() {
     await setTimeout(() => {
       this.show = false;
-    }, 1000);
+    }, 1500);
   },
 };
 </script>
@@ -33,16 +33,16 @@ export default {
 </template>
 <style lang="scss">
 #loading {
-  height: 100vh;
+  height: 300vh;
   width: 100vw;
   background-color: white;
   position: absolute;
   z-index: 1;
-  padding-top: 100px;
+  padding-top: 250px;
   div {
     margin: auto;
-    height: 15vh;
-    width: 15vw;
+    height: 25vh;
+    width: 25vw;
   }
 }
 </style>
