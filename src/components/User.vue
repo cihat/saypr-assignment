@@ -36,7 +36,7 @@ export default {
           id: this.userData.id,
           isLiked: this.liked,
         });
-        this.likedClass = "";
+        this.likedClass = "notLiked";
       }
     },
     getImgUrl() {
@@ -44,8 +44,8 @@ export default {
     },
     likedUser() {
       if (this.liked) {
-        this.liked = false;
         this.likedClass = "notLiked";
+        this.liked = false;
       } else {
         this.likedClass = "liked";
         this.liked = true;
